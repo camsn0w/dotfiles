@@ -12,10 +12,16 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-snippets'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'github/copilot.vim'
-Plug 'tpope/vim-fugitive' " for git
 Plug 'is0n/jaq-nvim' " code runner
 Plug 'TovarishFin/vim-solidity'
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'MunifTanjim/nui.nvim'
+" Git/Github 
+Plug 'github/copilot.vim'
+Plug 'tpope/vim-fugitive' " for git
+Plug 'pwntester/octo.nvim'
+" Session
+Plug 'rmagatti/auto-session'
 " Navagation and utils
 Plug 'ggandor/lightspeed.nvim'
 Plug 'ctrlpvim/ctrlp.vim' 
@@ -23,11 +29,11 @@ Plug 'max-0406/autoclose.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'sharkdp/fd'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'kyazdani42/nvim-tree.lua'
 Plug 'declancm/cinnamon.nvim'
 " Bar 
 Plug 'romgrk/barbar.nvim'
 Plug 'vim-airline/vim-airline'
+Plug 'mechatroner/rainbow_csv'
 call plug#end()
 
 set encoding=utf-8
@@ -48,9 +54,6 @@ set termguicolors
 
 " Show line numbers relative to the current cursor position
 set relativenumber
-
-" Hide buffers
-set bufhidden
 
 " Move to previous/next
 nnoremap <silent>    <A-1> :BufferGoto 1<CR>
@@ -96,40 +99,12 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " END COC STUFF
 
-" Terminal Function
-let g:term_buf = 0
-let g:term_win = 0
-function! TermToggle(height)
-    if win_gotoid(g:term_win)
-        hide
-    else
-        botright new
-        exec "resize " . a:height
-        try
-            exec "buffer " . g:term_buf
-        catch
-            call termopen($SHELL, {"detach": 0})
-            let g:term_buf = bufnr("")
-            set nonumber
-            set norelativenumber
-            set signcolumn=no
-        endtry
-        startinsert!
-        let g:term_win = win_getid()
-    endif
-endfunction
-
-" Toggle terminal on/off (neovim)
-nnoremap <A-t> :call TermToggle(12)<CR>
-inoremap <A-t> <Esc>:call TermToggle(12)<CR>
-tnoremap <A-t> <C-\><C-n>:call TermToggle(12)<CR>
-
 " Terminal go back to normal mode
 tnoremap <Esc> <C-\><C-n>
 tnoremap :q! <C-\><C-n>:q!<CR>
 
 " END TERMINAL STUFF
-set shell=/bin/bash
+"set shell=/bin/bash
 
 
 " TreeSitter
@@ -152,3 +127,11 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
+" Octo
+lua require 'octo'.setup{}
+
+" Highlight yanked text
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=200 }
+augroup END

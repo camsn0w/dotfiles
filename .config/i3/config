@@ -5,8 +5,9 @@
 
 # SCREEN TEST 
 exec blueman-applet
-exec xrandr --output DP-1 --mode 3440x1440 -r 100
+exec xrandr --output DP-0 --mode 3440x1440 -r 100
 #Uncomment for 1080p screen support
+
 
 #Alternating layouts
 exec --no-startup-id alternating_layouts.py
@@ -36,13 +37,12 @@ exec --no-startup-id picom
 # vim cheat sheet
 bindsym $mod+p exec feh -F -x /home/sn0w/Pictures/cheat_sheet.jpg 
 
-# start a terminal
-
 #bindsym $mod+Return exec st -f "FiraMono Nerd Font Mono:style=Medium:size=15" fish 
 
+# start a terminal
 bindsym $mod+Return exec kitty -1
 # start onivim
-bindsym $mod+o exec Oni2
+bindsym $mod+o exec chromium --new-window https://app.slack.com/client/T4L87LM8A/D02MQ17DATY https://trello.com/b/OU3l9G3R/eng-sprint-108?filter=member:cameronconnell2 https://github.com/wildlink/deviceapi/pulls
 
 # open bluetooth manager
 bindsym $mod+Shift b exec blueberry
@@ -193,7 +193,7 @@ bindsym XF86AudioStop exec playerctl stop
 bindsym $mod+i exec chromium
 
 # Borders
-for_window [class="^.*"] border pixel 12
+for_window [class="^.*"] border pixel 10
 # Gaps
 gaps inner 15
 smart_borders no_gaps
@@ -232,5 +232,7 @@ exec --no-startup-id uim-toolbar-gtk3-systray
 exec --no-startup-id mpd ~/.config/mpd/mpd.conf
 
 
+# Maybe a fix for jetbrains editors:
+for_window [instance="sun-awt-X11-XWindowPeer"] border pixel 0
 
 
